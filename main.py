@@ -1,5 +1,5 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, status
-from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 import jwt
 import secrets
 import uuid
@@ -11,6 +11,15 @@ app = FastAPI()
 connection_manager = ConnectionManager()
 users = dict()
 secret_key = secrets.token_hex(256)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 
 def generate_token(user_id):
