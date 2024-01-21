@@ -63,6 +63,6 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
             message = json.loads(message_raw)
             await connection_manager.broadcast(message["text"], message["room"], user_id, username)
     except json.JSONDecodeError:
-        connection_manager.disconnect(websocket)
+        pass
     except WebSocketDisconnect:
         connection_manager.disconnect(websocket)
