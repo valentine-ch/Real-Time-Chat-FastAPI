@@ -60,17 +60,10 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
     try:
         while True:
             message_raw = await websocket.receive_text()
-            message = json.loads(message_raw)
-            await connection_manager.broadcast(message["text"], message["room"], user_id, username)
-    except json.JSONDecodeError:
-        pass
-    except AttributeError:
-        pass
-    except ValueError:
-        pass
-    except TypeError:
-        pass
-    except KeyError:
-        pass
+            try:
+                message = json.loads(message_raw)
+                await connection_manager.broadcast(message["text"], message["room"], user_id, username)
+            except json.JSONDecodeError:
+                pass
     except WebSocketDisconnect:
         connection_manager.disconnect(websocket)
