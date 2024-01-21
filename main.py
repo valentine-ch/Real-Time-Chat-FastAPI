@@ -41,7 +41,7 @@ def verify_token(token: str):
         return None
 
 
-@app.post("create_user")
+@app.post("/create_user")
 async def create_user(username: schemas.Username):
     user_id = str(uuid.uuid4())
     token = generate_token(user_id)

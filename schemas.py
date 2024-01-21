@@ -2,4 +2,4 @@ from pydantic import BaseModel
 
 
 class Username(BaseModel):
-    name: int
+    name: str
