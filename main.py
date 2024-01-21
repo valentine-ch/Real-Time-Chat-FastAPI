@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import jwt
 import secrets
 import uuid
+import json
 from connection_manager import ConnectionManager
 import schemas
 
@@ -58,7 +59,8 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
     await connection_manager.connect(websocket)
     try:
         while True:
-            message = await websocket.receive_text()
-            await connection_manager.broadcast(message, user_id, username)
+            message_raw = await websocket.receive_text()
+            message = json.loads(message_raw)
+            await connection_manager.broadcast(message["text"], message["room"], user_id, username)
     except WebSocketDisconnect:
         connection_manager.disconnect(websocket)
